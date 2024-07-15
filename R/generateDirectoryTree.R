@@ -1,3 +1,26 @@
+#' Generate Directory Tree
+#'
+#' This function generates a tree structure of directories and files starting from a specified main directory. 
+#' It allows for the exclusion or inclusion of files and directories based on patterns, and optionally allows 
+#' for the addition of descriptions to each item in the tree.
+#'
+#' @param main_directory The main directory from which to start generating the tree.
+#' @param output_file An optional file path where the generated tree structure will be saved. 
+#' If NULL, the tree is only printed to the terminal.
+#' @param exclude_pattern A character vector of regex patterns to exclude files and directories. 
+#' Items matching any pattern will be excluded from the tree.
+#' @param include_pattern A character vector of regex patterns to include files. 
+#' Only files matching at least one of these patterns will be included in the tree. 
+#' This parameter does not affect directories.
+#' @param fill_in A logical indicating whether to prompt the user for descriptions for each item in the tree. 
+#' If TRUE, the user will be prompted; otherwise, a placeholder is used.
+#' @return A character vector representing the tree structure, with each element being a line in the tree.
+#' @examples
+#' generateDirectoryTree(getwd()) # Generate and print a tree of the current working directory
+#' generateDirectoryTree(getwd(), output_file = "tree.txt") # Generate and save the tree to a file
+#' generateDirectoryTree(getwd(), exclude_pattern = c("^\\.git$", "^node_modules$")) # Exclude .git and node_modules directories
+#' generateDirectoryTree(getwd(), include_pattern = c("\\.R$"), fill_in = TRUE) # Include only R files and prompt for descriptions
+#' @export
 generateDirectoryTree <- function(main_directory, output_file = NULL, exclude_pattern = character(0), include_pattern = character(0), fill_in = FALSE) {
   # Function to get description from the user
   getDescription <- function(file_name) {
@@ -66,8 +89,3 @@ generateDirectoryTree <- function(main_directory, output_file = NULL, exclude_pa
  
   return(tree_structure)
 }
-
-# examples
-res <- generateDirectoryTree(here("file"), "filetree.txt", include_pattern = c("*.py", "*.R"), exclude_pattern = "html")
-
-res <- generateDirectoryTree(here("file"), include_pattern = c("*.R"), fill_in = TRUE)
